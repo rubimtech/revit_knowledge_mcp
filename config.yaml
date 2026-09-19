@@ -1,0 +1,63 @@
+# Unified Revit/Archicad/Navisworks knowledge MCP server.
+#
+# Secrets must come from the environment (never commit them):
+#   POLZA_API_KEY / RKM_EMBED_API_KEY   - cloud embedding provider
+#   OPENAI_API_KEY                      - optional OpenAI vector store search
+#   OPENAI_VECTOR_STORE_ID
+# You may also keep local overrides in config.local.yaml (gitignored) by
+# pointing RKM_CONFIG at it.
+
+qdrant:
+  mode: local            # "local" - host/port below, "remote" - url/api_key
+  local:
+    host: 127.0.0.1
+    port: 6333
+  remote:
+    url: ""              # e.g. https://apps.rubim.tech/knowledge
+    api_key: ""
+
+embed:
+  mode: local            # "local" - Ollama, "cloud" - OpenAI-compatible
+  model: bge-m3
+  local:
+    ollama_url: http://localhost:11434/api/embeddings
+  cloud:
+    api_url: https://polza.ai/api/v1
+    api_key: ""
+    model: baai/bge-m3
+
+docs:
+  enabled: true
+  year: 2025             # default Revit API year for live documentation
+  base_url: https://rvtdocs.com
+  search_url: https://rvtdocs.com/search/v2/api/
+
+openai:
+  enabled: true
+  api_key: ""            # prefer OPENAI_API_KEY env var
+  vector_store_id: ""    # prefer OPENAI_VECTOR_STORE_ID env var
+
+log_level: INFO
+
+# Knowledge collections exposed by search_knowledge.
+# platform is used by the platform filter and by the research tool.
+collections:
+  - name: revit_api_knowledge
+    platform: revit
+    description: Revit API documentation (CHM-derived)
+  - name: Revit_SDK_Samples
+    platform: revit
+    description: Revit SDK C# samples
+  - name: revit_api
+    platform: revit
+    description: Revit API pages (jsonl)
+  - name: navisworks_api_bge
+    platform: navisworks
+    description: Navisworks API documentation
+  - name: archicad_api_29
+    platform: archicad
+    description: Archicad API 29 documentation
+  - name: fsnb_bge
+    platform: other
+    description: FSNB collection
+    default: false

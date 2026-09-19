@@ -1,0 +1,14 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "mcp": {
+    "revit-knowledge": {
+      "type": "local",
+      "command": ["python", "-m", "revit_knowledge_mcp"],
+      "environment": {
+        "PYTHONPATH": "D:/DEV/revit_knowledge_mcp"
+      },
+      "enabled": true,
+      "timeout": 120000
+    }
+  }
+}
